@@ -16,22 +16,36 @@ fetch(API_URL)
       const fields = disaster.fields || {};
       const name = fields.name || "Unknown Disaster";
       const dateCreated = fields.date?.created || null;
-      
-      let countryNames = "Location not specified";
-      if (fields.country && Array.isArray(fields.country)) {
+
+      // Country extraction
+      let countryNames = "";
+      if (fields.country && Array.isArray(fields.country) && fields.country.length > 0) {
         countryNames = fields.country
-          .map(c => (c && c.name ? c.name : "Unknown"))
+          .map(c => c.name)
+          .filter(name => name && name.trim())
           .join(", ");
+      }
+
+      let formattedDate = "";
+      if (dateCreated) {
+        const date = new Date(dateCreated);
+        formattedDate = date.toLocaleString("en-US", { month: "short", year: "numeric" });
+      }
+
+      let line = "";
+      if (countryNames) {
+        line = `${countryNames}: ${name}`;
+      } else {
+        line = `${name}`;
+      }
+      
+      if (formattedDate) {
+        line += ` - ${formattedDate}`;
       }
 
       const div = document.createElement("div");
       div.className = "disaster-alert";
-      div.innerHTML = `
-        <strong>${name}</strong><br>
-        ${countryNames}<br>
-        <small>${dateCreated ? new Date(dateCreated).toLocaleDateString() : "Date unknown"}</small>
-        <hr>
-      `;
+      div.textContent = line;
       container.appendChild(div);
     });
   })

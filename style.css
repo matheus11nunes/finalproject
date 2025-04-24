@@ -47,6 +47,7 @@ h1{
 .about{
     color: black;
     font-size: 25px;
+    text-align: left;
 }
 
 .h3-page1{
@@ -201,7 +202,7 @@ input, textarea{
     font-size: 18px;
 }
 
-.readMoreBtn {
+.readMoreBtn{
     padding: 5px 15px;
     background-color: #004080;
     color: white;
@@ -209,8 +210,23 @@ input, textarea{
     font-size: 12px; 
   }
 
-.moreText {
+.moreText{
     margin-top: 20px ;
     margin-bottom: 30px;
     font-size: 25px;
+}
+
+.disaster-heading{
+    color: #004080;
+    max-width: 600px;
+    font-size: 40px;
+    margin-top: 20px;
+
+}
+
+#disaster-updates{
+    color: black;
+    font-size: 25px;
+    text-align: left;
+    line-height: 1.5;
 }
