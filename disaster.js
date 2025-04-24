@@ -13,14 +13,20 @@ fetch(API_URL)
     container.innerHTML = "";
 
     disasters.forEach(disaster => {
-      const { name, country, date } = disaster.fields;
-      const countryNames = country ? country.map(c => c.name).join(", ") : "Location not specified";
+      const name = disaster.fields?.name || "Unknown Disaster";
+      const countryArray = disaster.fields?.country;
+      const dateCreated = disaster.fields?.date?.created;
+
+      const countryNames = Array.isArray(countryArray)
+        ? countryArray.map(c => c.name).join(", ")
+        : "Location not specified";
+
       const div = document.createElement("div");
       div.className = "disaster-alert";
       div.innerHTML = `
         <strong>${name}</strong><br>
         ${countryNames}<br>
-        <small>${new Date(date.created).toLocaleDateString()}</small>
+        <small>${dateCreated ? new Date(dateCreated).toLocaleDateString() : "Date unknown"}</small>
         <hr>
       `;
       container.appendChild(div);
