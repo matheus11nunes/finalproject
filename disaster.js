@@ -15,11 +15,13 @@ fetch(API_URL)
     disasters.forEach(disaster => {
       const fields = disaster.fields || {};
       const name = fields.name || "Unknown Disaster";
-      const dateCreated = fields.date?.created;
+      const dateCreated = fields.date?.created || null;
+      
       let countryNames = "Location not specified";
-
-      if (Array.isArray(fields.country)) {
-        countryNames = fields.country.map(c => c.name).join(", ");
+      if (fields.country && Array.isArray(fields.country)) {
+        countryNames = fields.country
+          .map(c => (c && c.name ? c.name : "Unknown"))
+          .join(", ");
       }
 
       const div = document.createElement("div");
