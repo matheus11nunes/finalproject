@@ -1,4 +1,4 @@
-const API_URL = 'https://corsproxy.io/?https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries';
+const API_URL = 'https://api.reliefweb.int/v1/disasters?appname=helphub&limit=10';
 
 fetch(API_URL)
   .then(response => {
@@ -8,22 +8,24 @@ fetch(API_URL)
     return response.json();
   })
   .then(data => {
-    const disasters = data.DisasterDeclarationsSummaries.slice(0, 10);
+    const disasters = data.data;
     const container = document.getElementById("disaster-data");
     container.innerHTML = "";
 
     disasters.forEach(disaster => {
+      const { name, country, date } = disaster.fields;
       const div = document.createElement("div");
       div.className = "disaster-alert";
       div.innerHTML = `
-        <strong>${disaster.state}</strong> – ${disaster.declarationTitle}<br>
-        <small>${new Date(disaster.declarationDate).toLocaleDateString()}</small>
+        <strong>${name}</strong><br>
+        ${country.map(c => c.name).join(", ")}<br>
+        <small>${new Date(date.created).toLocaleDateString()}</small>
         <hr>
       `;
       container.appendChild(div);
     });
   })
   .catch(error => {
-    console.error("Error fetching FEMA data:", error);
-    document.getElementById("disaster-data").innerText = "Could not load FEMA disaster data.";
+    console.error("Error fetching disaster data:", error);
+    document.getElementById("disaster-data").innerText = "Could not load disaster data.";
   });
